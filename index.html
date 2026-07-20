@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy 20th Birthday, Mary Sao! 🎂</title>
+  <meta name="description" content="Celebrating Mary Sao's 20th Birthday - A milestone celebration of growth, memories, and future dreams." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="CSS/style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+  
+  <!-- ===== YOUTUBE PLAYER (hidden, for actual song playback) ===== -->
+  <div id="youtube-player" style="position:absolute;width:0;height:0;visibility:hidden;overflow:hidden"></div>
+  
+  
+
+  <!-- ===== CONFETTI CANVAS ===== -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <!-- Logo -->
+      <button class="logo-btn" onclick="scrollToSection('home')">
+        <div class="logo-icon">M</div>
+        <div class="logo-text">
+          <span class="logo-name">Mary Sao</span>
+          <span class="logo-est">EST. 2006</span>
+        </div>
+      </button>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav">
+        <button class="nav-link" data-section="journey" onclick="scrollToSection('journey')">My Journey</button>
+        <button class="nav-link" data-section="memories" onclick="scrollToSection('memories')">Memories</button>
+        <button class="nav-link" data-section="gratitude" onclick="scrollToSection('gratitude')">Gratitude</button>
+        <button class="nav-link" data-section="letter" onclick="scrollToSection('letter')">Letter to Future Me</button>
+        <button class="nav-link" data-section="future" onclick="scrollToSection('future')">20 Years</button>
+      </nav>
+
+      <!-- Desktop Actions -->
+      <div class="desktop-actions">
+        <button class="action-btn action-btn-border" onclick="togglePlayer()" title="Open Background Music Dashboard">
+          <span id="header-music-indicator">
+            <span style="display:flex;align-items:flex-end;gap:2px;height:14px;padding-bottom:2px">
+              <span class="w-[2px] bg-purple-600 bar-anim anim-delay-1" style="width:2px;height:100%;display:inline-block"></span>
+              <span class="w-[2px] bg-purple-600 bar-anim anim-delay-3" style="width:2px;height:100%;display:inline-block"></span>
+              <span class="w-[2px] bg-purple-600 bar-anim anim-delay-2" style="width:2px;height:100%;display:inline-block"></span>
+              <span class="w-[2px] bg-purple-600 bar-anim anim-delay-4" style="width:2px;height:100%;display:inline-block"></span>
+            </span>
+          </span>
+          <span id="header-music-label" style="font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:#a28da8">Muted</span>
+        </button>
+
+        <button class="action-btn" onclick="toggleSound()" title="Toggle UI Chimes">
+          <span id="sound-icon">🔔</span>
+        </button>
+
+        <button class="action-btn" onclick="sharePage()" title="Copy Page Link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </button>
+
+        <button class="celebrate-btn" onclick="triggerConfetti('center'); addToast('Milestone celebration triggered! 🎉🎂', 'success')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fed65b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+          Celebrate
+        </button>
+      </div>
+
+      <!-- Mobile Controls -->
+      <div class="mobile-controls">
+        <button class="mobile-btn" onclick="togglePlayer()">
+          <span id="mobile-music-icon">🎵</span>
+        </button>
+        <button class="mobile-btn" onclick="toggleSound()">
+          <span id="mobile-sound-icon">🔔</span>
+        </button>
+        <button class="mobile-btn" onclick="toggleMobileMenu()">
+          <span id="mobile-menu-icon">☰</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MOBILE DRAWER ===== -->
+  <div id="mobile-drawer" class="mobile-drawer hidden">
+    <button class="mobile-drawer-btn" onclick="scrollToSection('journey')">My Journey</button>
+    <button class="mobile-drawer-btn" onclick="scrollToSection('memories')">Memories</button>
+    <button class="mobile-drawer-btn" onclick="scrollToSection('gratitude')">Gratitude</button>
+    <button class="mobile-drawer-btn" onclick="scrollToSection('letter')">Letter to Future Me</button>
+    <button class="mobile-drawer-btn" onclick="scrollToSection('future')">20 Years</button>
+    <button class="mobile-drawer-btn mobile-drawer-share" onclick="closeMobileMenu(); sharePage()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      Share Celebration Link
+    </button>
+    <button class="mobile-drawer-celebrate" onclick="closeMobileMenu(); triggerConfetti('center'); addToast('Cheered Mary! 🎉🎂', 'success')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fed65b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+      Celebrate Milestone!
+    </button>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="home" class="hero">
+    <div class="hero-bg-1"></div>
+    <div class="hero-bg-2"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="none" style="animation:spin-slow 6s linear infinite"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+          A Milestone Celebration
+        </div>
+        <h1 class="hero-title">
+          Happy 20th Birthday, <br />
+          <span class="hero-name">Mary Sao</span>
+        </h1>
+        <p class="hero-date">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#735c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          22 July 2006 – 22 July 2026
+        </p>
+        <p class="hero-text">
+          Today, I celebrate not only my birthday but also my journey.
+        </p>
+        <p class="hero-text" style="margin-top: 1rem;">
+          Looking back, life has not always been easy. There were times when I felt lost, disappointed, and unsure of my future. I made mistakes, faced failures, and sometimes wanted to give up. But every challenge made me stronger and taught me to be patient, brave, and never stop believing in myself.
+        </p>
+        <p class="hero-text" style="margin-top: 1rem;">
+          I am proud of myself for not giving up. Every late night of studying, every small step forward, every lesson I learned, and every challenge I overcame has helped me become the person I am today.
+        </p>
+        <p class="hero-text" style="margin-top: 1rem;">
+          I know my journey is still just beginning. There are many dreams to chase, many lessons to learn, and many goals to achieve. I believe that every experience good or bad is helping me become a better person.
+        </p>
+        <p class="hero-text" style="margin-top: 1rem;">
+          As I turn 20, I choose to welcome this new chapter with hope, gratitude, and confidence. I will keep learning, keep growing, and keep moving forward, no matter how difficult the road may be.
+        </p>
+        <p class="hero-text" style="margin-top: 1rem; font-weight: 600; color: #341452;">
+          Happy 20th Birthday to me. ❤️ <em>The best is yet to come.</em>
+        </p>
+
+        <!-- Music Onboarding -->
+        <div id="music-onboard" class="music-onboard">
+          <div class="music-onboard-icon">🎵</div>
+          <div class="music-onboard-text">
+            <p>Turn on background music!</p>
+            <p>Click the floating music controller in the corner to play calming tunes while reading.</p>
+          </div>
+          <button class="music-onboard-btn" onclick="togglePlay()">Play Music</button>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="scrollToSection('journey')">
+            Explore My Journey
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <button class="btn-secondary" onclick="triggerConfetti('center'); addToast('Shower confetti! 🎉🎂', 'success')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+            Shower Confetti
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <div class="hero-sparkle-deco">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+        </div>
+        <div class="hero-polaroid">
+          <img src="Images/1.jpg" alt="Mary Sao smiling beautiful portrait" />
+          <div class="hero-polaroid-caption">
+            <p>Mary Sao</p>
+            <p>July 22, 2026</p>
+          </div>
+        </div>
+        <div class="hero-badge animate-bounce-slow">
+          <div class="hero-badge-icon">🏆</div>
+          <div class="hero-badge-text">
+            <small>Milestone</small>
+            <strong>Turning 20 🎉</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MY JOURNEY SECTION ===== -->
+  <section id="journey" class="section journey-section">
+    <div class="max-w-1120">
+      <div class="section-header">
+        <h2 class="section-title">My Journey</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Every year has helped me become stronger, wiser, and more grateful. My journey has not been easy, but every challenge has made me who I am today.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-line"></div>
+        <div id="timeline-items"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MEMORIES SECTION ===== -->
+  <section id="memories" class="section memories-section">
+    <div class="max-w-1120">
+      <div class="section-header">
+        <h2 class="section-title">20 Years of Memories</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">A curated collection of snapshots reflecting a lifetime of moments, laughter, and discovery. Click to view in beautiful detail.</p>
+      </div>
+
+      <div class="filter-bar" id="filter-bar"></div>
+
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div id="lightbox" class="lightbox hidden" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <img id="lightbox-img" class="lightbox-img" src="" alt="" />
+      <div class="lightbox-footer">
+        <div>
+          <span id="lightbox-cat" class="lightbox-cat"></span>
+          <h4 id="lightbox-title" class="lightbox-title"></h4>
+        </div>
+        <button class="lightbox-celebrate" onclick="triggerConfetti('center'); addToast('Showering birthday sparkle! 🌟', 'success')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#735c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GRATITUDE SECTION ===== -->
+  <section id="gratitude" class="section gratitude-section">
+    <div class="max-w-1120">
+      <div class="section-header">
+        <h2 class="section-title">Hearts of Gratitude</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">To those who have been the wind beneath my wings.</p>
+      </div>
+
+      <div class="gratitude-grid">
+        <div class="gratitude-card">
+          <div class="gratitude-icon" style="background:rgba(243,232,255,0.6);color:#341452">❤️</div>
+          <div>
+            <span class="gratitude-label">FOUNDATION</span>
+            <h3 class="gratitude-card-title">To My Family ❤️</h3>
+            <p class="gratitude-quote" style="color:rgba(52,20,82,0.9)">&ldquo;To my beloved family,
+
+On my birthday, I don't wish for expensive gifts or a big celebration. My greatest gift is having a family like you.
+
+Thank you for loving me, believing in me, and never giving up on me, even when I made mistakes or felt like giving up on myself. Your love has always been my strength.
+Mom and Dad, I know you have worked so hard and sacrificed so much so I could have a better future. I may not always say it, but I see your hard work, and I carry it in my heart every day. Everything I do is for you.
+To my brothers and sisters, thank you for always being by my side. Thank you for your love, your support, and for making our house feel like home.
+I know I have not achieved all my dreams yet, and I cannot repay everything you have done for me today. But I promise I will keep learning, keep working hard, and never give up. One day, I hope I can make you proud and give you a better life.
+No matter how old I become or where life takes me, my heart will always belong to my family. You are my first home, my greatest blessing, and the reason I keep moving forward.
+Thank you for everything.
+I love you more than words can ever say.
+With all my love,
+
+Mary Sao ❤️&rdquo;</p>
+          </div>
+          <div class="gratitude-divider"></div>
+        </div>
+
+        <div class="gratitude-card">
+          <div class="gratitude-icon" style="background:rgba(254,243,199,0.8);color:#735c00">🏆</div>
+          <div>
+            <span class="gratitude-label" style="color:#b45309">GROWTH</span>
+            <h3 class="gratitude-card-title" style="color:#735c00">Teacher & Mentors & Friends</h3>
+            <p class="gratitude-quote" style="color:rgba(115,92,0,0.95)">&ldquo;To my teachers, mentors, and friends,
+
+Thank you for your guidance, encouragement, and unwavering support throughout my journey. Your kindness, patience, and belief in me have inspired me to keep learning, growing, and never giving up.
+
+I am truly grateful for every lesson, every piece of advice, and every memorable moment we have shared. Thank you for being part of my story and helping me become the person I am today.
+
+With heartfelt gratitude,
+
+Mary Sao ❤️&rdquo;</p>
+          </div>
+          <div class="gratitude-divider" style="background:rgba(115,92,0,0.3)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TECH SECTION ===== -->
+  <section class="tech-section">
+    <div class="tech-bg-1"></div>
+    <div class="tech-bg-2"></div>
+    <div class="tech-grid">
+      <div class="code-window">
+        <div class="code-header">
+          <div class="code-dots">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+          </div>
+          <span class="code-filename">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            mary_sao.ts
+          </span>
+          <span style="width:2.5rem"></span>
+        </div>
+        <div class="code-body">
+          <p><span class="code-blue">const</span> <span class="code-yellow">mary_sao</span> = {</p>
+          <p class="code-indent-1">age: <span class="code-gold">20</span>,</p>
+          <p class="code-indent-1">passion: <span class="code-green">'Web Development'</span>,</p>
+          <p class="code-indent-1">institution: <span class="code-gold">'PNC Cambodia'</span>,</p>
+          <p class="code-indent-1">dream: <span class="code-pink">'Infinite'</span></p>
+          <p>};</p>
+          <p class="code-mt"><span class="code-blue">function</span> <span class="code-yellow">buildFuture</span>() {</p>
+          <p class="code-indent-1"><span class="code-blue">while</span> (<span class="code-blue">true</span>) {</p>
+          <p class="code-indent-2"><span class="code-gray">keepLearning();</span></p>
+          <p class="code-indent-2"><span class="code-gray">grow();</span></p>
+          <p class="code-indent-1">}</p>
+          <p>}</p>
+          <p class="code-mt code-amber"><span class="code-gray">// Every line of code is a step closer...</span></p>
+        </div>
+      </div>
+
+      <div class="tech-content">
+        <h2 class="tech-title">Building My Future</h2>
+        <div class="tech-divider"></div>
+        <p class="tech-text">&ldquo;As I celebrate my 20th birthday, I promise myself to keep learning, keep growing, and never stop believing in my dreams. I will work hard to become a skilled web developer, build meaningful projects, and create technology that helps people.&rdquo;</p>
+        <p class="tech-quote">&ldquo;Every line of code I write is one step closer to the future I dream of.&rdquo;</p>
+        <div class="tech-cards">
+          <div class="tech-card">
+            <div class="tech-card-icon">💻</div>
+            <h4 class="tech-card-title">Web Development</h4>
+            <p class="tech-card-desc">Building websites that are simple, useful, and easy for everyone to use.</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">🎨</div>
+            <h4 class="tech-card-title">UI & Design</h4>
+            <p class="tech-card-desc">Creating beautiful, clean, and user-friendly designs.</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">💡</div>
+            <h4 class="tech-card-title">Learning & Growth</h4>
+            <p class="tech-card-desc">Learning new skills every day and becoming a better developer.</p>
+          </div>
+          <div class="tech-card">
+            <div class="tech-card-icon">🚀</div>
+            <h4 class="tech-card-title">My Dream</h4>
+            <p class="tech-card-desc">To become a professional web developer, support my family, and create projects that make a positive difference in people's lives.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LETTER SECTION ===== -->
+  <section id="letter" class="letter-section">
+    <div class="max-w-1120">
+      <div class="section-header">
+        <h2 class="section-title">Letter to Future Me</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">A time-locked message reflecting current hopes, dreams, and foundational rules for life. Click Seal with Love below!</p>
+      </div>
+
+      <div class="letter-container">
+        <div class="letter-card" id="letter-card">
+          <!-- Sealed Overlay -->
+          <div id="letter-sealed" class="letter-sealed-overlay hidden">
+            <div class="letter-sealed-icon">❤️</div>
+            <h3 class="letter-sealed-title">Time-Locked with Love</h3>
+            <p class="letter-sealed-text">My 20th birthday letter has been locked and sealed. It will open in the future when you are ready to look back!</p>
+            <button class="letter-unseal-btn" onclick="unsealLetter()">Unseal & Edit</button>
+          </div>
+
+          <!-- Stamp -->
+          <div class="letter-stamp">
+            <div class="letter-stamp-inner">
+              <div class="letter-stamp-label">Postage</div>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1" class="animate-pulse"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+              <div class="letter-stamp-date">22 JULY 2026</div>
+            </div>
+          </div>
+
+          <div class="letter-header">
+            <h3 class="letter-greeting">Dear My future </h3>
+            <span class="letter-date">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              July 22, 2026
+            </span>
+          </div>
+
+          <div class="letter-body">
+            <p>If you are reading this, I hope you are living the life you once dreamed of.</p>
+            <p>I hope you never forgot the girl who started with nothing but big dreams, hope, and the courage to keep going. I cried, failed, and faced many hard days, but I never gave up.</p>
+            <p>No matter how successful I become, stay humble, be kind, and always remember my family. They are the reason I kept moving forward.</p>
+            <p>If life is difficult, don't be afraid. I have already overcome many challenges, and I'm stronger than you think.</p>
+            <p>Keep learning. Keep growing. Keep believing in yourself. Never stop chasing your dreams.</p>
+            <p>I hope one day you can look back with a smile and proudly say, <strong>"I made it."</strong></p>
+          </div>
+
+          <div class="letter-footer">
+            <div>
+              <p class="letter-signature-label">With Love,</p>
+              <p class="letter-signature-name">Mary Sao ❤️</p>
+            </div>
+            <button class="letter-seal-btn" onclick="sealLetter()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#d97706" stroke="#d97706"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              Seal with Love
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WISHES / GUEST BOOK ===== -->
+  <section class="wishes-section">
+    <div class="max-w-1120">
+      <div class="wishes-grid">
+        <div class="wishes-form-col">
+          <div class="wishes-label">
+            <span class="wishes-label-icon">💬</span>
+            <span class="wishes-label-text">Guest Book</span>
+          </div>
+          <h2 class="wishes-title">Leave a Birthday Wish</h2>
+          <p class="wishes-desc">Are you a classmate, mentor, friend, or family member? Drop a happy birthday blessing for Mary to commemorate her 20th birthday milestone!</p>
+
+          <form class="wish-form" onsubmit="addWish(event)">
+            <div class="wish-form-row">
+              <div class="wish-field">
+                <label>Your Name</label>
+                <input type="text" id="wish-name" placeholder="e.g. Sophy" maxlength="20" required />
+              </div>
+              <div class="wish-field">
+                <label>Relation</label>
+                <select id="wish-relation">
+                  <option value="Classmate">Classmate</option>
+                  <option value="Friend">Friend</option>
+                  <option value="Sister">Sister</option>
+                  <option value="Brother">Brother</option>
+                  <option value="Family Member">Family Member</option>
+                  <option value="Family Member">Teacher</option>
+                  <option value="PNC Mentor">Mentor</option>
+                  <option value="Well-wisher">Well-wisher</option>
+                </select>
+              </div>
+            </div>
+            <div class="wish-field">
+              <label>Your Blessing / Wish</label>
+              <textarea id="wish-message" rows="3" placeholder="Type a heartwarming wish for Mary's future..." maxlength="200" required></textarea>
+            </div>
+            <button type="submit" class="wish-submit">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Pin My Wish
+            </button>
+          </form>
+        </div>
+
+        <div class="wishes-wall">
+          <div class="wishes-list custom-scrollbar" id="wishes-list"></div>
+          <div class="wishes-footer">
+            <span class="wishes-count">
+              <span style="color:#ef4444">❤️</span>
+              <span id="wishes-count">0</span> Warm Blessings Pinned
+            </span>
+            <button class="wishes-reset" onclick="resetWishes()">Reset Board</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL WISH ===== -->
+  <section id="future" class="final-section">
+    <div class="final-sparkle-1">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+    </div>
+    <div class="final-sparkle-2">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+    </div>
+    <div class="final-inner">
+      <div class="final-icon">🎉</div>
+      <h2 class="final-title">A Final Wish</h2>
+      <p class="final-quote">&ldquo;As I begin this new chapter, I wish for a year filled with happiness, good health, peace, success, and many beautiful moments.&rdquo;</p>
+      <p class="final-quote" style="margin-top: 1.5rem;">&ldquo;May I continue to learn, grow, and become a better person each day. May I always have the courage to follow my dreams, the strength to face every challenge, and the wisdom to never give up.&rdquo;</p>
+      <p class="final-quote" style="margin-top: 1.5rem;">&ldquo;No matter what the future brings, I will keep believing in myself and remember that every new day is a new opportunity.&rdquo;</p>
+      <h3 class="final-birthday">Happy 20th Birthday to me. 🎂❤️</h3>
+      <p style="font-family:'Playfair Display',serif;font-size:1rem;color:#f0dbff;margin-top:0.5rem;">With love, Mary Sao ✨</p>
+      <button class="final-btn" onclick="triggerConfetti('center'); addToast('Awesome choice! Here is some major birthday sparkle! 🌟🎂', 'success')">
+        Click to Celebrate!
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-name">Mary Sao</span>
+        <p class="footer-tagline">Crafting premium solutions for the web ecosystem.</p>
+      </div>
+      <div class="footer-center">
+        <p class="footer-heart">
+          Made with <span style="color:#ef4444;display:inline-block;animation:pulse 2s infinite">❤️</span> by Mary Sao
+        </p>
+        <p class="footer-copy">&copy; 2006 &ndash; 2026. All rights reserved.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+          LinkedIn
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+          GitHub
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://portfolio.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+          Portfolio
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== MUSIC PLAYER ===== -->
+  <div class="music-player-wrap">
+    <div id="music-panel" class="music-panel hidden">
+      <div class="music-panel-header">
+        <div class="music-panel-title">
+          <div class="music-panel-dot"></div>
+          <span class="music-panel-label">Mary's Soundtrack</span>
+        </div>
+        <button class="music-panel-close" onclick="togglePlayer()">✕</button>
+      </div>
+
+      <div class="music-track-info">
+        <div class="music-vinyl">
+          <div class="music-vinyl-ring-1"></div>
+          <div class="music-vinyl-ring-2"></div>
+          <div class="music-vinyl-center" id="vinyl-center">MS</div>
+          <div class="music-vinyl-needle"></div>
+        </div>
+        <div class="music-track-meta">
+          <h4 class="music-track-title" id="track-title">Beautiful in White</h4>
+          <p class="music-track-artist" id="track-artist">Orchestral Piano Tribute</p>
+          <p class="music-track-desc" id="track-desc">A gorgeous, soaring piano and string arrangement</p>
+        </div>
+      </div>
+
+      <div class="music-visualizer" id="visualizer"></div>
+
+      <div class="music-seeker">
+        <input type="range" id="seeker" min="0" max="100" value="0" oninput="seekAudio(this.value)" />
+        <div class="music-time">
+          <span id="current-time">00:00</span>
+          <span id="total-time">00:00</span>
+        </div>
+      </div>
+
+      <div class="music-controls">
+        <button class="music-ctrl-btn" onclick="prevTrack()">⏮</button>
+        <button class="music-play-btn" id="play-btn" onclick="togglePlay()">
+          <span id="play-icon">▶</span>
+        </button>
+        <button class="music-ctrl-btn" onclick="nextTrack()">⏭</button>
+      </div>
+
+      <div class="music-extras">
+        <div class="music-volume">
+          <button class="music-vol-btn" onclick="toggleMute()">
+            <span id="vol-icon">🔊</span>
+          </button>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.4" oninput="changeVolume(this.value)" />
+        </div>
+        <button class="music-playlist-toggle inactive" id="playlist-toggle" onclick="togglePlaylist()">
+          <span>Tracks</span>
+          <span id="playlist-chevron">▼</span>
+        </button>
+      </div>
+
+      <div id="music-playlist" class="music-playlist hidden"></div>
+    </div>
+
+    <!-- Floating Bubble -->
+    <button class="music-bubble" id="music-bubble" onclick="togglePlayer()">
+      <span id="bubble-content">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <span id="music-badge" class="music-bubble-badge">
+        <span class="music-bubble-badge-ring animate-ping"></span>
+        <span class="music-bubble-badge-dot">1</span>
+      </span>
+    </button>
+  </div>
+
+  <!-- ===== AUDIO ELEMENT ===== -->
+  <audio id="bg-audio" ontimeupdate="onTimeUpdate()" onloadedmetadata="onLoadedMeta()" onended="nextTrack()"></audio>
+
+  <script>
+    // ===== DATA =====
+    const MILESTONES = [
+      { id: 1, title: "Childhood", year: "Where My Dreams Began", description: "I grew up with a loving family who taught me to be kind, respectful, and thankful. Even though life was not always easy, I learned to stay positive and dream of a better future.", image: "Images/2.jpg" },
+      { id: 2, title: "Learning and Growing", year: "Never Giving Up", description: "As I grew older, I faced many challenges and made many mistakes. Sometimes I felt afraid and wanted to give up, but I kept moving forward. Every lesson, every failure, and every success helped me become stronger and more confident.", image: "Images/3.jpg" },
+      { id: 3, title: "Today and Tomorrow", year: "Still Chasing My Dreams", description: "Today, I am proud of how far I have come. I know I still have a lot to learn, but I will never stop growing. I will continue to work hard, believe in myself, and chase my dreams. My journey is just beginning, and I am excited for everything that the future will bring.", image: "Images/4.jpg" }
+    ];
+
+    const MEMORIES = [
+      { id: 1, title: "Joyful Smile", category: "Portraits", image: "Images/5.jpg", aspectRatio: "gallery-span-1" },
+      { id: 2, title: "In the Park", category: "Travel", image: "Images/6.jpg", aspectRatio: "gallery-span-2" },
+      { id: 3, title: "Festival Night", category: "Daily", image: "Images/7.jpg", aspectRatio: "gallery-span-1" },
+      { id: 4, title: "Campus Pathway", category: "Campus", image: "Images/8.jpg", aspectRatio: "gallery-span-2" },
+      { id: 5, title: "Candid Moment", category: "Portraits", image: "Images/9.jpg", aspectRatio: "gallery-span-1" },
+      { id: 6, title: "Waterfall Reflection", category: "Travel", image: "Images/10.jpg", aspectRatio: "gallery-span-2" },
+      { id: 7, title: "Ring Light Selfie", category: "Daily", image: "Images/11.jpg", aspectRatio: "gallery-span-2" },
+      { id: 8, title: "Fields of Green", category: "Travel", image: "Images/12.jpg", aspectRatio: "gallery-span-1" },
+      { id: 9, title: "Learning Spaces", category: "Campus", image: "Images/13.jpg", aspectRatio: "gallery-span-1" },
+      { id: 10, title: "Golden Hour Temple", category: "Travel", image: "Images/14.jpg", aspectRatio: "gallery-span-2" },
+      { id: 11, title: "Laughter", category: "Portraits", image: "Images/1.jpg", aspectRatio: "gallery-span-1" },
+      { id: 12, title: "Serene Garden", category: "Daily", image: "Images/2.jpg", aspectRatio: "gallery-span-1" }
+    ];
+
+    const PLAYLIST = [
+      { id: "a-thousand-years", title: "A Thousand Years", artist: "Christina Perri", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", ytId: "NZGHXy1IAHM", description: "A beautiful, timeless love song — perfect for this special milestone" },
+      { id: "beautiful-in-white", title: "Beautiful in White", artist: "Orchestral Piano Tribute", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", description: "A gorgeous, soaring piano and string arrangement of the timeless classic" },
+      { id: "sweet-with-myself", title: "Sweet with Myself", artist: "Cozy Acoustic Solo", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", description: "A gentle, sweet melody to celebrate yourself on this milestone day" },
+      { id: "sweet-harmony", title: "Sweet Harmony", artist: "Acoustic Ambient Solo", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", description: "Relaxing, acoustic background guitar vibes" },
+      { id: "whispering-dreams", title: "Whispering Dreams", artist: "Piano Soft Lounge", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", description: "Serene piano layout, perfect for reading" },
+      { id: "golden-horizons", title: "Golden Horizons", artist: "Lofi Coding Chillout", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3", description: "Chill low-fidelity beats to focus and celebrate" }
+    ];
+
+    // ===== STATE =====
+    const state = {
+      activeTab: 'home',
+      mobileMenuOpen: false,
+      soundEnabled: true,
+      selectedCategory: 'All',
+      letterSealed: false,
+      lightboxImage: null,
+      isPlaying: false,
+      currentTrackIdx: 0,
+      currentTime: 0,
+      duration: 0,
+      volume: 0.4,
+      isMuted: false,
+      isPlayerExpanded: false,
+      playlistOpen: false,
+      musicHasStarted: false,
+      wishes: []
+    };
+
+    // ===== DOM REFS =====
+    const audio = document.getElementById('bg-audio');
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animFrame = null;
+
+    // ===== CANVAS CONFETTI =====
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti(source) {
+      playSoundEffect('chime');
+      const colors = ["#341452", "#fed65b", "#ba96db", "#f0dbff", "#735c00", "#e9c349", "#ec4899", "#10b981"];
+      const positions = [];
+      if (!source || source === 'center') {
+        positions.push({ x: 0, y: canvas.height * 0.7, dir: 1 });
+        positions.push({ x: canvas.width, y: canvas.height * 0.7, dir: -1 });
+      } else if (source === 'left') {
+        positions.push({ x: 0, y: canvas.height * 0.7, dir: 1 });
+      } else if (source === 'right') {
+        positions.push({ x: canvas.width, y: canvas.height * 0.7, dir: -1 });
+      }
+      positions.forEach(pos => {
+        for (let i = 0; i < 80; i++) {
+          particles.push({
+            x: pos.x, y: pos.y,
+            size: Math.random() * 8 + 6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedX: pos.dir * (Math.random() * 14 + 6),
+            speedY: -(Math.random() * 16 + 8),
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 12
+          });
+        }
+      });
+    }
+
+    function renderParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.speedY += 0.35;
+        p.speedX *= 0.98;
+        p.rotation += p.rotationSpeed;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size / 1.5);
+        ctx.restore();
+        if (p.y > canvas.height + 20 || p.x < -20 || p.x > canvas.width + 20) {
+          particles.splice(i, 1);
+        }
+      }
+      animFrame = requestAnimationFrame(renderParticles);
+    }
+    renderParticles();
+
+    // Auto confetti on load
+    setTimeout(() => {
+      triggerConfetti('center');
+      addToast("Welcome to Mary's Birthday space! 🎉", "info");
+    }, 1500);
+
+    // ===== SOUND EFFECTS (Web Audio API) =====
+    function playSoundEffect(type) {
+      if (!state.soundEnabled) return;
+      try {
+        const actx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = actx.currentTime;
+        const playNote = (freq, start, dur, vol = 0.1) => {
+          const osc = actx.createOscillator();
+          const gain = actx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(vol, start);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+          osc.connect(gain);
+          gain.connect(actx.destination);
+          osc.start(start);
+          osc.stop(start + dur);
+        };
+        if (type === 'chime') {
+          [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50].forEach((f, i) => playNote(f, now + i * 0.07, 0.4, 0.1));
+        } else if (type === 'chime-low') {
+          [261.63, 329.63, 392.00, 523.25].forEach((f, i) => playNote(f, now + i * 0.09, 0.5, 0.12));
+        } else if (type === 'chime-high') {
+          [783.99, 880.00, 1046.50, 1174.66, 1318.51].forEach((f, i) => playNote(f, now + i * 0.06, 0.3, 0.08));
+        } else if (type === 'success') {
+          playNote(587.33, now, 0.15);
+          playNote(783.99, now + 0.1, 0.35);
+        } else if (type === 'click') {
+          const osc = actx.createOscillator();
+          const gain = actx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.connect(gain);
+          gain.connect(actx.destination);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        }
+      } catch(e) { console.warn("Audio blocked:", e); }
+    }
+
+    // ===== TOAST =====
+    function addToast(message, type) {
+      const container = document.getElementById('toast-container');
+      const icons = { success: '🎉', love: '❤️', music: '🎵', info: '✨' };
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span class="toast-icon">${icons[type] || '✨'}</span><span class="toast-text">${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-30px)';
+        toast.style.transition = 'all 0.3s';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // ===== NAVIGATION =====
+    function scrollToSection(id) {
+      state.activeTab = id;
+      playSoundEffect('click');
+      closeMobileMenu();
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      updateNavIndicators();
+    }
+
+    function updateNavIndicators() {
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.section === state.activeTab);
+      });
+    }
+
+    function toggleMobileMenu() {
+      state.mobileMenuOpen = !state.mobileMenuOpen;
+      const drawer = document.getElementById('mobile-drawer');
+      const icon = document.getElementById('mobile-menu-icon');
+      drawer.classList.toggle('hidden', !state.mobileMenuOpen);
+      icon.textContent = state.mobileMenuOpen ? '✕' : '☰';
+      playSoundEffect('click');
+    }
+
+    function closeMobileMenu() {
+      state.mobileMenuOpen = false;
+      document.getElementById('mobile-drawer').classList.add('hidden');
+      document.getElementById('mobile-menu-icon').textContent = '☰';
+    }
+
+    // ===== SHARE =====
+    function sharePage() {
+      playSoundEffect('success');
+      navigator.clipboard.writeText(window.location.href);
+      addToast("Link copied to clipboard! Share the love! 🔗", "success");
+      triggerConfetti('center');
+    }
+
+    // ===== SOUND TOGGLE =====
+    function toggleSound() {
+      state.soundEnabled = !state.soundEnabled;
+      playSoundEffect('click');
+      document.getElementById('sound-icon').textContent = state.soundEnabled ? '🔔' : '🔕';
+      document.getElementById('mobile-sound-icon').textContent = state.soundEnabled ? '🔔' : '🔕';
+      addToast(state.soundEnabled ? "Sound effects enabled 🔔" : "Sound effects muted 🔕", "info");
+    }
+
+    // ===== TIMELINE RENDER =====
+    function renderTimeline() {
+      const container = document.getElementById('timeline-items');
+      container.innerHTML = '';
+      MILESTONES.forEach((step, idx) => {
+        const isEven = idx % 2 === 0;
+        const item = document.createElement('div');
+        item.className = 'timeline-item';
+        item.innerHTML = `
+          <div class="timeline-content ${isEven ? 'timeline-content-left' : 'timeline-content-right'}">
+            <span class="timeline-year">${step.year}</span>
+            <h3 class="timeline-title">${step.title}</h3>
+            <p class="timeline-desc">${step.description}</p>
+          </div>
+          <div class="timeline-node">
+            <button class="timeline-dot" onclick="onTimelineClick(${idx}, ${isEven})">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><path d="M9 3h6v5l4 4-4 4v5H9v-5l-4-4 4-4V3z"/></svg>
+            </button>
+          </div>
+          <div class="${isEven ? 'md:col-start-2' : 'md:col-start-1'} flex justify-center">
+            <div class="timeline-image-wrap">
+              <img src="${step.image}" alt="${step.title}" referrerpolicy="no-referrer" />
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function onTimelineClick(idx, isEven) {
+      if (idx === 0) playSoundEffect('chime-low');
+      else if (idx === 1) playSoundEffect('chime');
+      else playSoundEffect('chime-high');
+      triggerConfetti(isEven ? 'left' : 'right');
+      addToast(`Celebrated Milestone: "${MILESTONES[idx].title}"! ✨`, 'success');
+    }
+
+    // ===== GALLERY RENDER =====
+    function renderGallery() {
+      const grid = document.getElementById('gallery-grid');
+      const filtered = state.selectedCategory === 'All' ? MEMORIES : MEMORIES.filter(m => m.category === state.selectedCategory);
+      grid.innerHTML = '';
+      filtered.forEach(photo => {
+        const item = document.createElement('div');
+        item.className = `gallery-item ${photo.aspectRatio}`;
+        item.innerHTML = `
+          <img src="${photo.image}" alt="${photo.title}" referrerpolicy="no-referrer" />
+          <div class="gallery-overlay">
+            <p class="gallery-overlay-title">${photo.title}</p>
+            <p class="gallery-overlay-cat">${photo.category}</p>
+          </div>
+        `;
+        item.onclick = () => openLightbox(photo);
+        grid.appendChild(item);
+      });
+    }
+
+    function renderFilters() {
+      const bar = document.getElementById('filter-bar');
+      const cats = ['All', 'Portraits', 'Campus', 'Travel', 'Daily'];
+      bar.innerHTML = '';
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = `filter-btn${cat === state.selectedCategory ? ' active' : ''}`;
+        btn.textContent = cat;
+        btn.onclick = () => {
+          state.selectedCategory = cat;
+          playSoundEffect('click');
+          renderFilters();
+          renderGallery();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    // ===== LIGHTBOX =====
+    function openLightbox(photo) {
+      state.lightboxImage = photo;
+      document.getElementById('lightbox').classList.remove('hidden');
+      document.getElementById('lightbox-img').src = photo.image;
+      document.getElementById('lightbox-img').alt = photo.title;
+      document.getElementById('lightbox-cat').textContent = photo.category + ' Collection';
+      document.getElementById('lightbox-title').textContent = photo.title;
+      playSoundEffect('click');
+    }
+
+    function closeLightbox() {
+      state.lightboxImage = null;
+      document.getElementById('lightbox').classList.add('hidden');
+    }
+
+    // ===== LETTER =====
+    function sealLetter() {
+      state.letterSealed = true;
+      document.getElementById('letter-sealed').classList.remove('hidden');
+      triggerConfetti('center');
+      addToast("Letter sealed and time-locked! ❤️💌", "love");
+    }
+
+    function unsealLetter() {
+      state.letterSealed = false;
+      document.getElementById('letter-sealed').classList.add('hidden');
+      playSoundEffect('click');
+      addToast("Letter unsealed!", "info");
+    }
+
+    // ===== WISHES =====
+    function loadWishes() {
+      const stored = localStorage.getItem('mary_birthday_wishes_v2');
+      if (stored) {
+        try { state.wishes = JSON.parse(stored); }
+        catch(e) { state.wishes = getDefaultWishes(); }
+      } else {
+        state.wishes = getDefaultWishes();
+      }
+      renderWishes();
+    }
+
+    function getDefaultWishes() {
+      return [
+        { id: "1", name: "Sophea", relation: "Classmate", message: "Happy 20th Birthday, Mary! 🎂 You are one of the most hardworking developers I know. Keep coding and shining!", date: "July 22, 2026", color: "bg-purple-50/70 text-purple-950 border-purple-200/50", likes: 5 },
+        { id: "2", name: "Mr. Jean", relation: "PNC Mentor", message: "Dear Mary, happy birthday! Your patience and perseverance in solving algorithmic blocks are truly outstanding. Wishing you standard-setting projects ahead!", date: "July 22, 2026", color: "bg-amber-50/70 text-amber-950 border-amber-200/50", likes: 8 },
+        { id: "3", name: "Lida", relation: "Sister", message: "To my lovely sister Mary, happy 20 years on earth! Family is always here supporting you. Have an amazing, blessed year!", date: "July 22, 2026", color: "bg-rose-50/70 text-rose-950 border-rose-200/50", likes: 6 }
+      ];
+    }
+
+    function saveWishes() {
+      localStorage.setItem('mary_birthday_wishes_v2', JSON.stringify(state.wishes));
+    }
+
+    function renderWishes() {
+      const list = document.getElementById('wishes-list');
+      list.innerHTML = '';
+      state.wishes.forEach(wish => {
+        const card = document.createElement('div');
+        card.className = `wish-card ${wish.color}`;
+        card.style.animation = 'slideInRight 0.3s ease-out';
+        card.innerHTML = `
+          <div class="wish-card-header">
+            <div class="wish-card-author">
+              <span class="wish-card-name">${wish.name}</span>
+              <span class="wish-card-relation">${wish.relation}</span>
+            </div>
+            <span class="wish-card-date">${wish.date}</span>
+          </div>
+          <p class="wish-card-message">&ldquo;${wish.message}&rdquo;</p>
+          <div class="wish-card-actions">
+            <button class="wish-like-btn" onclick="likeWish('${wish.id}')">
+              <span>❤️</span>
+              <span>${wish.likes}</span>
+            </button>
+          </div>
+          <button class="wish-delete-btn" onclick="deleteWish('${wish.id}')">✕</button>
+        `;
+        list.appendChild(card);
+      });
+      document.getElementById('wishes-count').textContent = state.wishes.length;
+    }
+
+    function addWish(e) {
+      e.preventDefault();
+      const name = document.getElementById('wish-name').value.trim();
+      const relation = document.getElementById('wish-relation').value;
+      const message = document.getElementById('wish-message').value.trim();
+      if (!name || !message) return;
+
+      const colors = [
+        "bg-purple-50/70 text-purple-950 border-purple-200/50",
+        "bg-amber-50/70 text-amber-950 border-amber-200/50",
+        "bg-rose-50/70 text-rose-950 border-rose-200/50",
+        "bg-emerald-50/70 text-emerald-950 border-emerald-200/50"
+      ];
+      const dateFormatted = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+      const newWish = {
+        id: Date.now().toString(),
+        name, relation, message, date: dateFormatted,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        likes: 0
+      };
+      state.wishes.unshift(newWish);
+      saveWishes();
+      renderWishes();
+      document.getElementById('wish-name').value = '';
+      document.getElementById('wish-message').value = '';
+      playSoundEffect('success');
+      addToast(`Thank you, ${name}! Wish pinned! 📍`, 'success');
+    }
+
+    function likeWish(id) {
+      playSoundEffect('click');
+      state.wishes = state.wishes.map(w => w.id === id ? { ...w, likes: w.likes + 1 } : w);
+      saveWishes();
+      renderWishes();
+      addToast("Love sent! ❤️", "love");
+    }
+
+    function deleteWish(id) {
+      state.wishes = state.wishes.filter(w => w.id !== id);
+      saveWishes();
+      renderWishes();
+      playSoundEffect('click');
+      addToast("Wish deleted", "info");
+    }
+
+    function resetWishes() {
+      if (confirm("Reset wishes to default blessings?")) {
+        localStorage.removeItem('mary_birthday_wishes_v2');
+        playSoundEffect('success');
+        addToast("Guest book reset back to default", "info");
+        setTimeout(() => window.location.reload(), 1000);
+      }
+    }
+
+    // ===== YOUTUBE IFrame API =====
+    let ytPlayer = null;
+    let ytReady = false;
+    let ytStatePoll = null;
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('youtube-player', {
+        height: '0',
+        width: '0',
+        playerVars: { autoplay: 0, controls: 0, disablekb: 1, enablejsapi: 1, rel: 0 },
+        events: {
+          onReady: () => { ytReady = true; },
+          onStateChange: (e) => {
+            if (e.data === YT.PlayerState.ENDED) {
+              nextTrack();
+            } else if (e.data === YT.PlayerState.PLAYING) {
+              state.isPlaying = true;
+              updatePlayerUI();
+              startYTStatePoll();
+            } else if (e.data === YT.PlayerState.PAUSED) {
+              state.isPlaying = false;
+              updatePlayerUI();
+              stopYTStatePoll();
+            }
+          }
+        }
+      });
+    }
+
+    function startYTStatePoll() {
+      stopYTStatePoll();
+      ytStatePoll = setInterval(() => {
+        if (ytPlayer && ytPlayer.getCurrentTime) {
+          const ct = ytPlayer.getCurrentTime();
+          state.currentTime = ct;
+          document.getElementById('current-time').textContent = formatTime(ct);
+          document.getElementById('seeker').value = ct;
+        }
+      }, 500);
+    }
+
+    function stopYTStatePoll() {
+      if (ytStatePoll) { clearInterval(ytStatePoll); ytStatePoll = null; }
+    }
+
+    // ===== AUDIO PLAYER =====
+    function loadTrack() {
+      const track = PLAYLIST[state.currentTrackIdx];
+      document.getElementById('track-title').textContent = track.title;
+      document.getElementById('track-artist').textContent = track.artist;
+      document.getElementById('track-desc').textContent = track.description;
+      
+      // Use YouTube for tracks with ytId, fallback to audio element for others
+      if (track.ytId && ytReady && ytPlayer) {
+        audio.pause();
+        audio.src = '';
+        ytPlayer.loadVideoById({ videoId: track.ytId, suggestedQuality: 'small' });
+        if (state.isPlaying) {
+          ytPlayer.playVideo();
+        } else {
+          ytPlayer.pauseVideo();
+        }
+      } else {
+        stopYTStatePoll();
+        audio.src = track.url;
+        audio.load();
+        if (state.isPlaying) {
+          audio.play().catch(() => { state.isPlaying = false; });
+        }
+      }
+      updatePlaylistUI();
+    }
+
+    function togglePlay() {
+      playSoundEffect('click');
+      if (!state.musicHasStarted) state.musicHasStarted = true;
+      const track = PLAYLIST[state.currentTrackIdx];
+      
+      if (track.ytId && ytReady && ytPlayer) {
+        if (state.isPlaying) {
+          ytPlayer.pauseVideo();
+          state.isPlaying = false;
+          addToast("Music paused", 'info');
+        } else {
+          ytPlayer.playVideo();
+          state.isPlaying = true;
+          addToast(`Playing "${track.title}" 🎵`, 'music');
+        }
+      } else {
+        state.isPlaying = !state.isPlaying;
+        if (state.isPlaying) {
+          audio.play().catch(() => { state.isPlaying = false; });
+          addToast(`Playing "${track.title}" 🎵`, 'music');
+        } else {
+          audio.pause();
+          addToast("Music paused", 'info');
+        }
+      }
+      updatePlayerUI();
+      hideOnboard();
+    }
+
+    function nextTrack() {
+      playSoundEffect('click');
+      state.currentTrackIdx = (state.currentTrackIdx + 1) % PLAYLIST.length;
+      state.isPlaying = true;
+      loadTrack();
+      const track = PLAYLIST[state.currentTrackIdx];
+      if (!(track.ytId && ytReady && ytPlayer)) {
+        audio.play().catch(() => { state.isPlaying = false; });
+      }
+      addToast(`Playing "${PLAYLIST[state.currentTrackIdx].title}" 🎵`, 'music');
+      updatePlayerUI();
+    }
+
+    function prevTrack() {
+      playSoundEffect('click');
+      state.currentTrackIdx = (state.currentTrackIdx - 1 + PLAYLIST.length) % PLAYLIST.length;
+      state.isPlaying = true;
+      loadTrack();
+      const track = PLAYLIST[state.currentTrackIdx];
+      if (!(track.ytId && ytReady && ytPlayer)) {
+        audio.play().catch(() => { state.isPlaying = false; });
+      }
+      addToast(`Playing "${PLAYLIST[state.currentTrackIdx].title}" 🎵`, 'music');
+      updatePlayerUI();
+    }
+
+    function selectTrack(idx) {
+      state.currentTrackIdx = idx;
+      state.isPlaying = true;
+      loadTrack();
+      const track = PLAYLIST[idx];
+      if (!(track.ytId && ytReady && ytPlayer)) {
+        audio.play().catch(() => { state.isPlaying = false; });
+      }
+      playSoundEffect('click');
+      addToast(`Playing "${track.title}" 🎵`, 'music');
+      updatePlayerUI();
+    }
+
+
+    function togglePlayer() {
+      state.isPlayerExpanded = !state.isPlayerExpanded;
+      playSoundEffect('click');
+      const panel = document.getElementById('music-panel');
+      const bubble = document.getElementById('music-bubble');
+      panel.classList.toggle('hidden', !state.isPlayerExpanded);
+      if (state.isPlayerExpanded) {
+        updatePlayerUI();
+        renderPlaylist();
+      }
+    }
+
+    function togglePlaylist() {
+      state.playlistOpen = !state.playlistOpen;
+      const el = document.getElementById('music-playlist');
+      const toggle = document.getElementById('playlist-toggle');
+      const chevron = document.getElementById('playlist-chevron');
+      el.classList.toggle('hidden', !state.playlistOpen);
+      toggle.className = `music-playlist-toggle ${state.playlistOpen ? 'active' : 'inactive'}`;
+      chevron.textContent = state.playlistOpen ? '▲' : '▼';
+      if (state.playlistOpen) renderPlaylist();
+    }
+
+    function renderPlaylist() {
+      const container = document.getElementById('music-playlist');
+      container.innerHTML = '';
+      PLAYLIST.forEach((track, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `music-playlist-item${idx === state.currentTrackIdx ? ' active' : ''}`;
+        btn.innerHTML = `
+          <div class="music-playlist-item-left">
+            <span style="color:${idx === state.currentTrackIdx ? '#7c3aed' : '#a28da8'}">🎵</span>
+            <span>${track.title}</span>
+          </div>
+          ${idx === state.currentTrackIdx && state.isPlaying ? `
+            <div class="music-playlist-indicator">
+              <div class="bar-anim anim-delay-1"></div>
+              <div class="bar-anim anim-delay-3"></div>
+              <div class="bar-anim anim-delay-2"></div>
+            </div>
+          ` : ''}
+        `;
+        btn.onclick = () => selectTrack(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function updatePlaylistUI() {
+      if (state.playlistOpen) renderPlaylist();
+    }
+
+    function toggleMute() {
+      playSoundEffect('click');
+      state.isMuted = !state.isMuted;
+      audio.muted = state.isMuted;
+      document.getElementById('vol-icon').textContent = state.isMuted ? '🔇' : '🔊';
+      addToast(state.isMuted ? "Volume muted" : "Volume unmuted", 'info');
+    }
+
+    function changeVolume(val) {
+      state.volume = parseFloat(val);
+      if (state.volume > 0 && state.isMuted) {
+        state.isMuted = false;
+        audio.muted = false;
+        document.getElementById('vol-icon').textContent = '🔊';
+      }
+      audio.volume = state.volume;
+    }
+
+    function seekAudio(val) {
+      const time = parseFloat(val);
+      state.currentTime = time;
+      audio.currentTime = time;
+    }
+
+    function onTimeUpdate() {
+      state.currentTime = audio.currentTime;
+      document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+      document.getElementById('seeker').value = audio.currentTime;
+      const seeker = document.getElementById('seeker');
+      if (!seeker.max || seeker.max === '100') {
+        seeker.max = audio.duration || 100;
+      }
+    }
+
+    function onLoadedMeta() {
+      state.duration = audio.duration;
+      document.getElementById('total-time').textContent = formatTime(audio.duration);
+      document.getElementById('seeker').max = audio.duration || 100;
+    }
+
+    function formatTime(t) {
+      if (isNaN(t)) return '00:00';
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function updatePlayerUI() {
+      const playIcon = document.getElementById('play-icon');
+      const headerLabel = document.getElementById('header-music-label');
+      const headerIndicator = document.getElementById('header-music-indicator');
+      const mobileIcon = document.getElementById('mobile-music-icon');
+      const bubbleContent = document.getElementById('bubble-content');
+      const badge = document.getElementById('music-badge');
+      const vinyl = document.getElementById('vinyl-center');
+
+      if (state.isPlaying) {
+        playIcon.textContent = '⏸';
+        headerLabel.textContent = 'Playing';
+        headerIndicator.innerHTML = `
+          <span style="display:flex;align-items:flex-end;gap:2px;height:14px;padding-bottom:2px">
+            <span class="bar-anim anim-delay-1" style="width:2px;height:100%;display:inline-block;background:#7c3aed"></span>
+            <span class="bar-anim anim-delay-3" style="width:2px;height:100%;display:inline-block;background:#7c3aed"></span>
+            <span class="bar-anim anim-delay-2" style="width:2px;height:100%;display:inline-block;background:#7c3aed"></span>
+            <span class="bar-anim anim-delay-4" style="width:2px;height:100%;display:inline-block;background:#7c3aed"></span>
+          </span>
+        `;
+        mobileIcon.textContent = '🎵';
+        bubbleContent.innerHTML = `
+          <span style="display:flex;align-items:flex-end;gap:2px;height:16px;padding-bottom:2px">
+            <span class="bar-anim anim-delay-1" style="width:2px;height:100%;display:inline-block;background:#fcd34d"></span>
+            <span class="bar-anim anim-delay-3" style="width:2px;height:100%;display:inline-block;background:#fcd34d"></span>
+            <span class="bar-anim anim-delay-2" style="width:2px;height:100%;display:inline-block;background:#fcd34d"></span>
+            <span class="bar-anim anim-delay-5" style="width:2px;height:100%;display:inline-block;background:#fcd34d"></span>
+            <span class="bar-anim anim-delay-4" style="width:2px;height:100%;display:inline-block;background:#fcd34d"></span>
+          </span>
+        `;
+        badge.classList.add('hidden');
+        vinyl.classList.add('spinning');
+      } else {
+        playIcon.textContent = '▶';
+        headerLabel.textContent = 'Muted';
+        headerIndicator.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a28da8" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        `;
+        mobileIcon.textContent = '🎵';
+        bubbleContent.innerHTML = `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        `;
+        vinyl.classList.remove('spinning');
+      }
+      updatePlaylistUI();
+    }
+
+    function hideOnboard() {
+      if (state.musicHasStarted || state.isPlaying) {
+        const onboard = document.getElementById('music-onboard');
+        if (onboard) onboard.style.display = 'none';
+      }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTimeline();
+      renderFilters();
+      renderGallery();
+      loadWishes();
+      loadTrack();
+      updateNavIndicators();
+    });
+  </script>
+</body>
+</html>
